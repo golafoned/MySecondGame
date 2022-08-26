@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -26,12 +28,20 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         FlipSprite();
+        CheckHeight();
+    }
+
+    private void CheckHeight()
+    {
+        if (transform.position.y < -10f)
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 
     void OnMove(InputValue inputValue)
     {
         moveInput = inputValue.Get<Vector2>();
-        print(moveInput);
         myRigidbody2D.velocity = new Vector2(moveInput.x * xSpeed, myRigidbody2D.velocity.y);
         // animator.SetBool("run", true);
     }
@@ -42,7 +52,6 @@ public class PlayerMovement : MonoBehaviour
         {
             myRigidbody2D.AddForce(new Vector2(myRigidbody2D.velocity.x, jumpPower));
             // animator.SetBool("jump", true);
-            print("jump");
         }
     }
 
